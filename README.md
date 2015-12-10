@@ -48,6 +48,5 @@ Alamofire.request(.PUT, "http://myapi.com/user/1", parameters: ["name": "Julian"
 
 ### Wishlist
 
-- Rationale, sources
 - Additional verbosity levels, formatting options
 - Pretty-printed JSON

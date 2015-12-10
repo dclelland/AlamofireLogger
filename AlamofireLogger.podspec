@@ -7,7 +7,7 @@
 Pod::Spec.new do |s|
   s.name                    = "AlamofireLogger"
   s.version                 = "0.1.0"
-  s.summary                 = "A linear interpolation microlibrary."
+  s.summary                 = "Tiny Alamofire plugin that logs requests and responses."
   s.homepage                = "https://github.com/dclelland/AlamofireLogger"
   s.license                 = { :type => 'MIT' }
   s.author                  = { "Daniel Clelland" => "daniel.clelland@gmail.com" }
