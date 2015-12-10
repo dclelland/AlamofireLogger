@@ -16,4 +16,6 @@ Pod::Spec.new do |s|
   s.ios.deployment_target   = '8.0'
   s.ios.source_files        = 'AlamofireLogger.swift'
   s.requires_arc            = true
+  
+  s.dependency 'Alamofire', '~> 3.1'
 end
