@@ -10,11 +10,16 @@ import Alamofire
 
 extension Request {
     
-    func log(verbose verbose: Bool = true) -> Self {
-        return logRequest(verbose: verbose).logResponse(verbose: verbose)
+    public enum LogLevel {
+        case Simple
+        case Verbose
     }
     
-    func logRequest(verbose verbose: Bool = true) -> Self {
+    public func log(level level: LogLevel = .Simple) -> Self {
+        return logRequest(level: level).logResponse(level: level)
+    }
+    
+    public func logRequest(level level: LogLevel = .Simple) -> Self {
         guard let request = request else {
             return self
         }
@@ -23,7 +28,7 @@ extension Request {
             return self
         }
         
-        if let data = request.HTTPBody, body = NSString(data: data, encoding: NSUTF8StringEncoding) where verbose == true {
+        if let data = request.HTTPBody, body = NSString(data: data, encoding: NSUTF8StringEncoding) where level == .Verbose {
             print("\(method) \(path): \"\(body)\"")
         } else {
             print("\(method) \(path)")
@@ -32,7 +37,7 @@ extension Request {
         return self
     }
     
-    func logResponse(verbose verbose: Bool = true) -> Self {
+    public func logResponse(level level: LogLevel = .Simple) -> Self {
         response { request, response, data, error in
             guard let response = response else {
                 if let path = request?.URL?.absoluteString, description = error?.localizedDescription {
@@ -45,7 +50,7 @@ extension Request {
                 return
             }
             
-            if let data = data, body = NSString(data: data, encoding: NSUTF8StringEncoding) where verbose == true {
+            if let data = data, body = NSString(data: data, encoding: NSUTF8StringEncoding) where level == .Verbose {
                 print("\(response.statusCode) \(path): \"\(body)\"")
             } else {
                 print("\(response.statusCode) \(path)")
