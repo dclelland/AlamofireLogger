@@ -11,7 +11,6 @@ Tiny Alamofire plugin that logs requests and responses.
 
 ### Wishlist
 
-- Documentation
 - Examples
 - Rationale, sources
 - Additional verbosity levels, formatting options
