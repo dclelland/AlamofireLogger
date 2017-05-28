@@ -50,3 +50,4 @@ Alamofire.request(.put, "http://myapi.com/user/1", parameters: ["name": "Julian"
 
 - Additional verbosity levels, formatting options
 - Pretty-printed JSON
+- Protocol-oriented logger types
