@@ -8,7 +8,7 @@ Tiny Alamofire plugin that logs requests and responses.
 
 ```swift
 
-Alamofire.request(.GET, "http://myapi.com/users").log().responseJSON { response in
+Alamofire.request("http://myapi.com/users").log().responseJSON { response in
     print(response)
 }
 
@@ -21,7 +21,7 @@ Alamofire.request(.GET, "http://myapi.com/users").log().responseJSON { response 
 
 ```swift
 
-Alamofire.request(.GET, "http://myapi.com/users").log(level: .Verbose).responseJSON { response in
+Alamofire.request("http://myapi.com/users").log(.verbose).responseJSON { response in
     print(response)
 }
 
@@ -34,9 +34,9 @@ Alamofire.request(.GET, "http://myapi.com/users").log(level: .Verbose).responseJ
 
 ```swift
 
-Alamofire.request(.PUT, "http://myapi.com/user/1", parameters: ["name": "Julian"], encoding: .JSON)
-    .logRequest(level: .Verbose)
-    .logResponse(level: .Simple)
+Alamofire.request(.put, "http://myapi.com/user/1", parameters: ["name": "Julian"])
+    .logRequest(.verbose)
+    .logResponse(.simple)
     .responseJSON { response in
         print(response)
 }

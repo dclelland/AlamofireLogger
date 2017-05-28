@@ -8,47 +8,49 @@
 
 import Alamofire
 
-// MARK: AlamofireLogger extension
+// MARK: Logging
 
-extension Request {
+extension DataRequest {
   
-    /// The logging level. `Simple` prints only a brief request/response description; `Verbose` prints the request/response body as well.
+    /// The logging level. `.simple` prints only a brief request/response description; `.verbose` prints the request/response body as well.
     public enum LogLevel {
-        /// Prints the request and response at their respective `Simple` levels.
-        case Simple
-        /// Prints the request and response at their respective `Verbose` levels.
-        case Verbose
+        /// Prints the request and response at their respective `.simple` levels.
+        case simple
+        /// Prints the request and response at their respective `.verbose` levels.
+        case verbose
     }
     
     /// Log the request and response at the specified `level`.
-    public func log(level level: LogLevel = .Simple) -> Self {
+    public func log(_ level: LogLevel = .simple) -> Self {
         switch level {
-        case .Simple:
-            return logRequest(level: .Simple).logResponse(level: .Simple)
-        case .Verbose:
-            return logRequest(level: .Verbose).logResponse(level: .Verbose)
+        case .simple:
+            return logRequest(.simple).logResponse(.simple)
+        case .verbose:
+            return logRequest(.verbose).logResponse(.verbose)
         }
     }
     
-    /// The request logging level. `Simple` prints only the HTTP method and path; `Verbose` prints the request body as well.
+}
+
+// MARK: - Request logging
+
+extension DataRequest {
+
+    /// The request logging level. `.simple` prints only the HTTP method and path; `.verbose` prints the request body as well.
     public enum RequestLogLevel {
         /// Print the request's HTTP method and path.
-        case Simple
+        case simple
         /// Print the request's HTTP method, path, and body.
-        case Verbose
+        case verbose
     }
     
     /// Log the request at the specified `level`.
-    public func logRequest(level level: RequestLogLevel = .Simple) -> Self {
-        guard let request = request else {
+    public func logRequest(_ level: RequestLogLevel = .simple) -> Self {
+        guard let method = request?.httpMethod, let path = request?.url?.absoluteString else {
             return self
         }
         
-        guard let method = request.HTTPMethod, let path = request.URL?.absoluteString else {
-            return self
-        }
-        
-        if let data = request.HTTPBody, body = NSString(data: data, encoding: NSUTF8StringEncoding) where level == .Verbose {
+        if case .verbose = level, let data = request?.httpBody, let body = String(data: data, encoding: .utf8) {
             print("\(method) \(path): \"\(body)\"")
         } else {
             print("\(method) \(path)")
@@ -57,36 +59,33 @@ extension Request {
         return self
     }
     
-    /// The response logging level. `Simple` prints only the HTTP status code and path; `Verbose` prints the response body as well.
+}
+
+// MARK: - Response logging
+
+extension DataRequest {
+
+    /// The response logging level. `.simple` prints only the HTTP status code and path; `.verbose` prints the response body as well.
     public enum ResponseLogLevel {
         /// Print the response's HTTP status code and path, or error if one is returned.
-        case Simple
+        case simple
         /// Print the response's HTTP status code, path, and body, or error if one is returned.
-        case Verbose
+        case verbose
     }
     
     /// Log the response at the specified `level`.
-    public func logResponse(level level: ResponseLogLevel = .Simple) -> Self {
-        response { request, response, data, error in
-            guard let response = response else {
-                if let path = request?.URL?.absoluteString, description = error?.localizedDescription {
-                    print("XXX \(path): \"\(description)\"")
-                }
+    public func logResponse(_ level: ResponseLogLevel = .simple) -> Self {
+        return response { response in
+            guard let code = response.response?.statusCode, let path = response.request?.url?.absoluteString else {
                 return
             }
-            
-            guard let path = response.URL?.absoluteString else {
-                return
-            }
-            
-            if let data = data, body = NSString(data: data, encoding: NSUTF8StringEncoding) where level == .Verbose {
-                print("\(response.statusCode) \(path): \"\(body)\"")
+
+            if case .verbose = level, let data = response.data, let body = String(data: data, encoding: .utf8) {
+                print("\(code) \(path): \"\(body)\"")
             } else {
-                print("\(response.statusCode) \(path)")
+                print("\(code) \(path)")
             }
         }
-        
-        return self
     }
     
 }
