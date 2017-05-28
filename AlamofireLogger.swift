@@ -2,8 +2,8 @@
 //  AlamofireLogger.swift
 //  Ticketing
 //
-//  Created by STQRY8 on 10/12/15.
-//  Copyright © 2015 Stqry. All rights reserved.
+//  Created by Daniel Clelland on 10/12/15.
+//  Copyright © 2015 Daniel Clelland. All rights reserved.
 //
 
 import Alamofire
