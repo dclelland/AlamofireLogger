@@ -1,5 +1,9 @@
 # AlamofireLogger
 
+[![CocoaPods Compatible](https://img.shields.io/cocoapods/v/AlamofireLogger.svg)](https://img.shields.io/cocoapods/v/AlamofireLogger.svg)
+[![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+[![Platform](https://img.shields.io/cocoapods/p/Alamofire.svg?style=flat)](https://alamofire.github.io/Alamofire)
+
 Tiny Alamofire plugin that logs requests and responses.
 
 ### Examples
