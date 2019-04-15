@@ -12,11 +12,13 @@ Pod::Spec.new do |s|
   s.license                 = { :type => 'MIT' }
   s.author                  = { "Daniel Clelland" => "daniel.clelland@gmail.com" }
   s.source                  = { :git => "https://github.com/dclelland/AlamofireLogger.git", :tag => "0.2.1" }
-  s.source_files            = 'AlamofireLogger.swift'
-  s.requires_arc            = true
   
   s.dependency 'Alamofire', '~> 4.0'
 
-  s.ios.deployment_target = '8.0'
-  s.osx.deployment_target = '10.10'
+  s.ios.deployment_target = '10.0'
+  s.osx.deployment_target = '10.12'
+  s.tvos.deployment_target = '10.0'
+  s.watchos.deployment_target = '3.0'
+
+  s.source_files = 'AlamofireLogger/*.swift'
 end
