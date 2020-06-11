@@ -21,7 +21,7 @@ extension DataRequest {
     }
     
     /// Log the request and response at the specified `level`.
-    public func log(_ level: LogLevel = .simple) -> Self {
+    @discardableResult public func log(_ level: LogLevel = .simple) -> Self {
         switch level {
         case .simple:
             return logRequest(.simple).logResponse(.simple)
@@ -45,12 +45,12 @@ extension DataRequest {
     }
     
     /// Log the request at the specified `level`.
-    public func logRequest(_ level: RequestLogLevel = .simple) -> Self {
-        guard let method = request?.httpMethod, let path = request?.url?.absoluteString else {
+    @discardableResult public func logRequest(_ level: RequestLogLevel = .simple) -> Self {
+        guard let method = convertible.urlRequest?.httpMethod, let path = convertible.urlRequest?.url?.absoluteString else {
             return self
         }
         
-        if case .verbose = level, let data = request?.httpBody, let body = String(data: data, encoding: .utf8) {
+        if case .verbose = level, let data = convertible.urlRequest?.httpBody, let body = String(data: data, encoding: .utf8) {
             print("\(method) \(path): \"\(body)\"")
         } else {
             print("\(method) \(path)")
@@ -74,7 +74,7 @@ extension DataRequest {
     }
     
     /// Log the response at the specified `level`.
-    public func logResponse(_ level: ResponseLogLevel = .simple) -> Self {
+    @discardableResult public func logResponse(_ level: ResponseLogLevel = .simple) -> Self {
         return response { response in
             guard let code = response.response?.statusCode, let path = response.request?.url?.absoluteString else {
                 return
