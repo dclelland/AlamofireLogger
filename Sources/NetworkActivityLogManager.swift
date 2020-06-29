@@ -7,13 +7,14 @@
 //
 
 import Alamofire
-import os
 
 public class NetworkActivityLogManager {
     
     public static let shared = NetworkActivityLogManager()
     
     public var level: NetworkActivityLogLevel = .none
+    
+    public var mode: NetworkActivityLogMode = .default
     
     init() {
         registerForNotifications()
@@ -49,7 +50,7 @@ extension NetworkActivityLogManager {
             return
         }
         
-        self.log(log)
+        mode.print(log: log)
     }
 
     @objc private func networkRequestDidStop(notification: Notification) {
@@ -61,17 +62,7 @@ extension NetworkActivityLogManager {
             return
         }
         
-        self.log(log)
-    }
-    
-}
-
-extension NetworkActivityLogManager {
-    
-    private static let log = OSLog(subsystem: Bundle.main.bundleIdentifier ?? "", category: "Networking")
-    
-    private func log(_ log: NetworkActivityLog) {
-        os_log("%{public}s", log: NetworkActivityLogManager.log, type: log.type, log.message)
+        mode.print(log: log)
     }
     
 }
