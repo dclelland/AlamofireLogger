@@ -1,53 +1,37 @@
 # AlamofireLogger
 
-Tiny Alamofire plugin that logs requests and responses.
+Tiny Alamofire plugin that logs requests and responses. Uses the [Apple unified logging system](https://developer.apple.com/documentation/os/logging) to persist logs if necessary.
 
-### Examples
+Cocoapods: `pod 'AlamofireLogger', '~> 1.0'`
 
-✓ Real, real simple, just prints the HTTP method/status code alongside the URL
-
-```swift
-
-Alamofire.request("http://myapi.com/users").log().responseJSON { response in
-    print(response)
-}
-
-// GET http://myapi.com/users
-// 200 http://myapi.com/users
-
-```
-
-✓ Print response bodies, too
+✓ Simple installation
 
 ```swift
+import AlamofireLogger
 
-Alamofire.request("http://myapi.com/users").log(.verbose).responseJSON { response in
-    print(response)
+@UIApplicationMain class AppDelegate: UIResponder, UIApplicationDelegate {
+
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        NetworkActivityLogManager.shared.level = .simple
+        return true
+    }
+
 }
-
-// GET http://myapi.com/users
-// 200 http://myapi.com/users: "[{"id": "1", "name": "Ricky"}]"
-
 ```
 
-✓ Different logging levels for requests and responses (e.g. you might only want to print the body of your requests)
+✓ Custom formatters
 
 ```swift
-
-Alamofire.request(.put, "http://myapi.com/user/1", parameters: ["name": "Julian"])
-    .logRequest(.verbose)
-    .logResponse(.simple)
-    .responseJSON { response in
-        print(response)
-}
-
-// PUT http://myapi.com/user/1: "{"name":"Julian"}"
-// 200 http://myapi.com/user/1
-
+NetworkActivityLogManager.shared.level = .custom(
+    startFormatter: { request in
+        return .debug("Request started: \(request.description)")
+    },
+    stopFormatter: { request in
+        if let error = request.error {
+            return .error("Request failed: \(error.localizedDescription)")
+        } else {
+            return .debug("Request completed: \(request.description)")
+        }
+    }
+)
 ```
-
-### Wishlist
-
-- Additional verbosity levels, formatting options
-- Pretty-printed JSON
-- Protocol-oriented logger types

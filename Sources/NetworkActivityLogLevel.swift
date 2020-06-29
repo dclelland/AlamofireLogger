@@ -10,9 +10,9 @@ import Alamofire
 
 public struct NetworkActivityLogLevel {
     
-    public typealias StartFormatter = (DataRequest) -> String?
+    public typealias StartFormatter = (DataRequest) -> NetworkActivityLog?
     
-    public typealias StopFormatter = (DataRequest) -> String?
+    public typealias StopFormatter = (DataRequest) -> NetworkActivityLog?
     
     public var startFormatter: StartFormatter
     
@@ -33,13 +33,13 @@ extension NetworkActivityLogLevel {
     
     public static let simple = NetworkActivityLogLevel(
         startFormatter: { request in
-            return request.description
+            return .debug(request.description)
         },
         stopFormatter: { request in
             if let error = request.task?.error {
-                return "\(request.description) \"\(error.localizedDescription)\""
+                return .error("\(request.description) \"\(error.localizedDescription)\"")
             } else {
-                return request.description
+                return .debug(request.description)
             }
         }
     )
@@ -47,18 +47,18 @@ extension NetworkActivityLogLevel {
     public static let verbose = NetworkActivityLogLevel(
         startFormatter: { request in
             if let body = request.request?.httpBody.flatMap({ String(data: $0, encoding: .utf8) }) {
-                return "\(request.description) \"\(body)\""
+                return .debug("\(request.description) \"\(body)\"")
             } else {
-                return request.description
+                return .debug(request.description)
             }
         },
         stopFormatter: { request in
             if let error = request.task?.error {
-                return "\(request.description) \"\(error.localizedDescription)\""
+                return .error("\(request.description) \"\(error.localizedDescription)\"")
             } else if let body = request.data.flatMap({ String(data: $0, encoding: .utf8) }) {
-                return "\(request.description) \"\(body)\""
+                return .debug("\(request.description) \"\(body)\"")
             } else {
-                return request.description
+                return .debug(request.description)
             }
         }
     )
