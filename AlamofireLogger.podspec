@@ -6,13 +6,13 @@
 #
 Pod::Spec.new do |s|
   s.name                    = "AlamofireLogger"
-  s.version                 = "1.0.1"
+  s.version                 = "1.0.2"
   s.summary                 = "Tiny Alamofire plugin that logs requests and responses."
   s.homepage                = "https://github.com/dclelland/AlamofireLogger"
   s.license                 = { :type => 'MIT' }
   s.author                  = { "Daniel Clelland" => "daniel.clelland@gmail.com" }
-  s.source                  = { :git => "https://github.com/dclelland/AlamofireLogger.git", :tag => "1.0.1" }
-  s.source_files            = 'Sources/**/*.swift'
+  s.source                  = { :git => "https://github.com/dclelland/AlamofireLogger.git", :tag => "1.0.2" }
+  s.source_files            = 'Sources/AlamofireLogger/**/*.swift'
   s.requires_arc            = true
   s.swift_versions          = ['5.1', '5.2']
   
